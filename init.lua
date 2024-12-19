@@ -291,6 +291,30 @@ require('lazy').setup({
   -- CONTEXT ON TOP OF SCREEN <33
   { 'nvim-treesitter/nvim-treesitter-context' },
 
+  -- LEETCODE !!!
+  -- {
+  --   'kawre/leetcode.nvim',
+  --   build = ':TSUpdate html', -- if you have `nvim-treesitter` installed
+  --   dependencies = {
+  --     'nvim-telescope/telescope.nvim',
+  --     -- "ibhagwan/fzf-lua",
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --   },
+  --   opts = {
+  --     -- configuration goes here
+  --   },
+  -- },
+
+  -- floating terminals
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    opts = {
+      direction = 'float',
+    },
+  },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
