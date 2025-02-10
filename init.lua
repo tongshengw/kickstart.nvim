@@ -161,10 +161,14 @@ vim.opt.scrolloff = 10
 --  See `:help vim.keymap.set()`
 
 -- Opens file explorer quicker <3
-vim.keymap.set('n', '<leader>pv', '<cmd>Ex<CR>')
+vim.keymap.set('n', '<leader>pv', '<cmd>Oil<CR>')
 
 -- Toggleterm <3
 vim.keymap.set({ 'n', 't' }, '<leader>tt', '<cmd>ToggleTerm<CR>')
+
+-- Tabwidth & Tabstop <3
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
@@ -276,13 +280,13 @@ require('lazy').setup({
     },
   },
   -- SESSION RESTORE <3
-  {
-    'rmagatti/auto-session',
-    lazy = false,
-    opts = {
-      suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
-    },
-  },
+  -- {
+  --   'rmagatti/auto-session',
+  --   lazy = false,
+  --   opts = {
+  --     suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+  --   },
+  -- },
   -- AUTO CLOSE BRACKETS <33
   {
     'windwp/nvim-autopairs',
@@ -301,6 +305,17 @@ require('lazy').setup({
     opts = {
       direction = 'float',
     },
+  },
+
+  -- better file manager <3
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -385,6 +400,7 @@ require('lazy').setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'debugloop/telescope-undo.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
         'nvim-telescope/telescope-fzf-native.nvim',
 
@@ -429,11 +445,11 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = { ['<C-y>'] = 'select_default' },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -441,6 +457,10 @@ require('lazy').setup({
           },
         },
       }
+      require('telescope').load_extension 'undo'
+
+      -- <3
+      vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<cr>', { desc = '[S]earch [U]ndo' })
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
@@ -663,7 +683,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
-        -- gopls = {},
+        gopls = {},
         pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -672,7 +692,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -756,6 +776,8 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        go = { 'gofumpt', 'goimports' },
+        -- cpp = { 'clang-format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
